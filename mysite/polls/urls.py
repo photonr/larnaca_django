@@ -1,6 +1,5 @@
 from django.urls import path
-
-import polls.views as views
+from polls import views
 
 app_name = "polls"
 urlpatterns = [
