@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from polls.models import Question
 
+
 class QuestionModelTests(TestCase):
 
     def test_was_published_recently_with_future_question(self):
@@ -35,6 +36,7 @@ class QuestionModelTests(TestCase):
         recent_question = Question(pub_date=time)
         self.assertIs(recent_question.was_published_recently(), True)
 
+
 def create_question(question_text, days):
     """
     Create a question with the given `question_text` and published the
@@ -43,6 +45,7 @@ def create_question(question_text, days):
     """
     time = timezone.now() + datetime.timedelta(days=days)
     return Question.objects.create(question_text=question_text, pub_date=time)
+
 
 class QuestionIndexViewTests(TestCase):
     def test_no_questions(self):
@@ -101,6 +104,7 @@ class QuestionIndexViewTests(TestCase):
             response.context['latest_question_list'],
             [question2, question1],
         )
+
 
 class QuestionDetailViewTests(TestCase):
     def test_future_question(self):
