@@ -17,8 +17,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from polls.views import QuestionsAPIView
 
 urlpatterns = [
     path("polls/", include("polls.urls")),
     path("admin/", admin.site.urls),
+    path('api/questions/', QuestionsAPIView.as_view(), name='api-index'),
+
 ]
