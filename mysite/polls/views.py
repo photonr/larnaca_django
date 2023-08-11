@@ -5,11 +5,10 @@ from django.views import generic
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import generics, status, viewsets
 
 from polls.models import Choice, Question
-from polls.serializers import QuestionSerializer
-
+from polls.serializers import QuestionSerializer, ChoiceSerializer
 
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
@@ -41,19 +40,6 @@ class ResultsView(generic.DetailView):
     template_name = "polls/results.html"
 
 
-# def index(request):
-#     latest_question_list = Question.objects.order_by("-pub_date")[:5]
-#     context = {"latest_question_list": latest_question_list}
-#     return render(request, "polls/index.html", context)
-
-# def detail(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     return render(request, "polls/detail.html", {"question": question})
-
-# def results(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     return render(request, 'polls/results.html', {'question': question})
-
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -76,8 +62,47 @@ def vote(request, question_id):
         # user hits the Back button.
         return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
 
-class QuestionsAPIView(APIView):
-    def get(self, request):
-        question_list = Question.objects.all()
-        serializer = QuestionSerializer(question_list, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+class QuestionList(generics.ListCreateAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+
+
+class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+
+
+class ChoiceList(generics.ListCreateAPIView):
+    queryset = Choice.objects.all()
+    serializer_class = ChoiceSerializer
+
+
+class ChoiceDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Choice.objects.all()
+    serializer_class = ChoiceSerializer
+
+class QuestionList2(APIView):
+    """
+    View to list all users in the system.
+
+    * Requires token authentication.
+    * Only admin users are able to access this view.
+    """
+    # authentication_classes = [authentication.TokenAuthentication]
+    # permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request, format=None):
+        """
+        Return a list of all users.
+        """
+        questions = [Question.question_text for quesion in Question.objects.all()]
+        return Response(questions)
+
+
+# class QuestionList2(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows users to be viewed or edited.
+#     """
+#     queryset = Question.objects.all()
+#     serializer_class = QuestionSerializer
+#     # permission_classes = [permissions.IsAuthenticated]

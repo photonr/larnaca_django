@@ -4,6 +4,7 @@ from django.utils import timezone
 
 from polls.models import Question
 
+
 class TestQuestionModel():
 
     def test_was_published_recently_with_future_question(self):
