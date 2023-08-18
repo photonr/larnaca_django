@@ -17,12 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
-from polls.views import QuestionList, QuestionDetail, ChoiceList, ChoiceDetail, QuestionList2
-
-# from rest_framework import routers
-
-# router = routers.DefaultRouter()
-# router.register(r'', QuestionList2)
+from polls.views import QuestionList, QuestionDetail, ChoiceList, ChoiceDetail
 
 urlpatterns = [
     path("polls/", include("polls.urls")),
@@ -31,12 +26,6 @@ urlpatterns = [
     path('api/questions/', QuestionList.as_view(), name='api-question-list'),
     path('api/questions/<int:pk>/', QuestionDetail.as_view(), name='question-detail'),
 
-    path('api/questions2/', QuestionList2.as_view(), name='api-question-list-2'),
-
-
     path('api/choices/', ChoiceList.as_view(), name='choice-list'),
     path('api/choices/<int:pk>/', ChoiceDetail.as_view(), name='question-detail'),
-    # path('api/questions2/', include(router.urls)),
-
-
 ]

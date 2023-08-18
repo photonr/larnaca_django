@@ -3,6 +3,7 @@ import pytest
 from django.urls import reverse
 from django.test import Client
 from faker import Faker
+from http import HTTPStatus
 from polls.tests.factories.question import QuestionFactory
 
 faker = Faker()
@@ -16,7 +17,7 @@ class TestQuestionIndexView():
         """
         response = Client().get(reverse('polls:index'))
 
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
         assert "No polls are available." in response.content.decode()
         assert len(response.context['latest_question_list']) == 0
 

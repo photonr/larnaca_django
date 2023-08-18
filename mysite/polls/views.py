@@ -5,7 +5,7 @@ from django.views import generic
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import generics, status, viewsets
+from rest_framework import generics
 
 from polls.models import Choice, Question
 from polls.serializers import QuestionSerializer, ChoiceSerializer
@@ -98,11 +98,3 @@ class QuestionList2(APIView):
         questions = [Question.question_text for quesion in Question.objects.all()]
         return Response(questions)
 
-
-# class QuestionList2(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows users to be viewed or edited.
-#     """
-#     queryset = Question.objects.all()
-#     serializer_class = QuestionSerializer
-#     # permission_classes = [permissions.IsAuthenticated]
