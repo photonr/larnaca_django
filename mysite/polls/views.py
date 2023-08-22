@@ -3,12 +3,11 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import generics
 
 from polls.models import Choice, Question
 from polls.serializers import QuestionSerializer, ChoiceSerializer
+
 
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
@@ -54,13 +53,13 @@ def vote(request, question_id):
                 "error_message": "You didn't select a choice.",
             },
         )
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+    selected_choice.votes += 1
+    selected_choice.save()
+    # Always return an HttpResponseRedirect after successfully dealing
+    # with POST data. This prevents data from being posted twice if a
+    # user hits the Back button.
+    return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+
 
 class QuestionList(generics.ListCreateAPIView):
     queryset = Question.objects.all()
@@ -80,21 +79,3 @@ class ChoiceList(generics.ListCreateAPIView):
 class ChoiceDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Choice.objects.all()
     serializer_class = ChoiceSerializer
-
-class QuestionList2(APIView):
-    """
-    View to list all users in the system.
-
-    * Requires token authentication.
-    * Only admin users are able to access this view.
-    """
-    # authentication_classes = [authentication.TokenAuthentication]
-    # permission_classes = [permissions.IsAdminUser]
-
-    def get(self, request, format=None):
-        """
-        Return a list of all users.
-        """
-        questions = [Question.question_text for quesion in Question.objects.all()]
-        return Response(questions)
-

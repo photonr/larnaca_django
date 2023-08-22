@@ -1,9 +1,9 @@
+from http import HTTPStatus
 import pytest
 
 from django.urls import reverse
 from django.test import Client
 from faker import Faker
-from http import HTTPStatus
 from polls.tests.factories.question import QuestionFactory
 
 faker = Faker()
