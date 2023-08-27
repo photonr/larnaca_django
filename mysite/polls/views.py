@@ -3,10 +3,15 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib.auth import logout
+
 from rest_framework import generics
+from rest_framework.response import Response
 
 from polls.models import Choice, Question
 from polls.serializers import QuestionSerializer, ChoiceSerializer
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAdminUser
 
 
 class IndexView(generic.ListView):
@@ -62,8 +67,25 @@ def vote(request, question_id):
 
 
 class QuestionList(generics.ListCreateAPIView):
+    authentication_classes = [BasicAuthentication]
+    # authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAdminUser]
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+
+    # def get(self, request, format=None):
+    #     content = {
+    #         'user': str(request.user),  # `django.contrib.auth.User` instance.
+    #         'auth': str(request.auth),  # None
+    #     }
+    #     return Response(content)
+    def get(self, request, format=None):
+        content = {
+            'status': 'request was permitted'
+        }
+        return Response(content)
+
+
 
 
 class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -79,3 +101,8 @@ class ChoiceList(generics.ListCreateAPIView):
 class ChoiceDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Choice.objects.all()
     serializer_class = ChoiceSerializer
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/admin/')

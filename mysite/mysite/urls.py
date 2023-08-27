@@ -17,7 +17,8 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
-from polls.views import QuestionList, QuestionDetail, ChoiceList, ChoiceDetail
+from polls.views import QuestionList, QuestionDetail, ChoiceList, ChoiceDetail, logout_view
+
 
 urlpatterns = [
     path("polls/", include("polls.urls")),
@@ -28,4 +29,7 @@ urlpatterns = [
 
     path('api/choices/', ChoiceList.as_view(), name='choice-list'),
     path('api/choices/<int:pk>/', ChoiceDetail.as_view(), name='question-detail'),
+
+    path('test123/', logout_view, name='logout'),
+
 ]
