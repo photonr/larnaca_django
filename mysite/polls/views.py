@@ -68,37 +68,28 @@ def vote(request, question_id):
 
 class QuestionList(generics.ListCreateAPIView):
     authentication_classes = [BasicAuthentication]
-    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAdminUser]
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
-    # def get(self, request, format=None):
-    #     content = {
-    #         'user': str(request.user),  # `django.contrib.auth.User` instance.
-    #         'auth': str(request.auth),  # None
-    #     }
-    #     return Response(content)
-    def get(self, request, format=None):
-        content = {
-            'status': 'request was permitted'
-        }
-        return Response(content)
-
-
-
 
 class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAdminUser]
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
 
 
 class ChoiceList(generics.ListCreateAPIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAdminUser]
     queryset = Choice.objects.all()
     serializer_class = ChoiceSerializer
 
 
 class ChoiceDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAdminUser]
     queryset = Choice.objects.all()
     serializer_class = ChoiceSerializer
 
