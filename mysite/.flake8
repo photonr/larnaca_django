@@ -2,4 +2,3 @@
 ; ignore = E501
 max-line-length = 100
 exclude = .git,__pycache__,migrations,
-; max-complexity = 1
