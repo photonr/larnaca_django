@@ -25,11 +25,11 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 
     path('api/questions/', QuestionList.as_view(), name='api-question-list'),
-    path('api/questions/<int:pk>/', QuestionDetail.as_view(), name='question-detail'),
+    path('api/questions/<int:pk>/', QuestionDetail.as_view(), name='api-question-detail'),
 
     path('api/choices/', ChoiceList.as_view(), name='choice-list'),
     path('api/choices/<int:pk>/', ChoiceDetail.as_view(), name='question-detail'),
 
-    path('test123/', logout_view, name='logout'),
+    path('log_out/', logout_view, name='logout'),
 
 ]

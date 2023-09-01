@@ -6,12 +6,11 @@ from django.utils import timezone
 from django.contrib.auth import logout
 
 from rest_framework import generics
-from rest_framework.response import Response
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAdminUser
 
 from polls.models import Choice, Question
 from polls.serializers import QuestionSerializer, ChoiceSerializer
-from rest_framework.authentication import BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAdminUser
 
 
 class IndexView(generic.ListView):
@@ -69,8 +68,10 @@ def vote(request, question_id):
 class QuestionList(generics.ListCreateAPIView):
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAdminUser]
-    queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+
+    def get_queryset(self):
+        return Question.objects.all().order_by('id')
 
 
 class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):

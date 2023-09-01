@@ -73,7 +73,6 @@ class TestQuestionIndexView():
     @pytest.mark.parametrize("question_text, days, result",
                              [("Future question.", 30, False), ("Past question.", -10, True),])
     def test_question(self, question_text, days, result):
-        # question = create_question(question_text=question_text, days=days)
         question = QuestionFactory(question_text=question_text, days=days)
         response = Client().get(reverse('polls:index'))
         assert (question in response.context['latest_question_list']) == result
